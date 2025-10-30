@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday 🎂</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ae326a, #d9a0d1);
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 60px 20px;
+      color: white;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .countdown {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 40px;
+      color: #fff;
+    }
+
+    section {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .gallery img {
+      width: 250px;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .message-box {
+      margin: 30px auto;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .message-box input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+
+    .message-box button {
+      padding: 10px 20px;
+      background-color: #090200;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .messages {
+      margin-top: 20px;
+      background: rgba(255,255,255,0.7);
+      padding: 15px;
+      border-radius: 10px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    audio {
+      display: block;
+      margin: 30px auto;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="confetti"></div>
+
+  <header>
+    <h1>🎉 Happy Birthday Sonapori! 🎂</h1>
+    <p>Wishing you all the happiness and love on your special day 💖</p>
+  </header>
+
+  <div class="countdown" id="countdown"></div>
+
+  <section>
+    <h2>Enjoy 📸</h2>
+    <div class="gallery">
+      <img src="images\received_374618387343121.jpeg" alt="Smile">
+      <img src="images/image.png" alt="Cake">
+   
+      <img src="images/received_632880917668572.jpeg" alt="Party">
+    </div>
+  </section>
+
+  <section>
+    <h2>Leave Your Wishes 💌</h2>
+    <div class="message-box">
+      <input type="text" id="wishInput" placeholder="Type your message..." />
+      <button onclick="addWish()">Send Wish</button>
+      <div class="messages" id="messages"></div>
+    </div>
+  </section>
+
+  <audio controls autoplay loop>
+    <source src="music/Happy Birthday Song  Birthday Song.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    // 🎉 Confetti animation
+    const confettiContainer = document.querySelector('.confetti');
+    for (let i = 0; i < 150; i++) {
+      const confetti = document.createElement('div');
+      confetti.style.position = 'absolute';
+      confetti.style.width = '10px';
+      confetti.style.height = '10px';
+      confetti.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
+      confetti.style.top = '-10px';
+      confetti.style.left = `${Math.random() * 100}%`;
+      confetti.style.opacity = Math.random();
+      confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+      confettiContainer.appendChild(confetti);
+
+      const animation = confetti.animate([
+        { transform: `translateY(0px) rotate(0deg)` },
+        { transform: `translateY(${window.innerHeight + 100}px) rotate(360deg)` }
+      ], {
+        duration: Math.random() * 3000 + 3000,
+        iterations: Infinity,
+        delay: Math.random() * 2000
+      });
+    }
+
+    // ⏰ Countdown
+    const birthdayDate = new Date("2025-10-31T00:00:00").getTime();
+    const countdown = document.getElementById("countdown");
+
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = birthdayDate - now;
+      if (distance < 0) {
+        clearInterval(interval);
+        countdown.innerHTML = "🎉 It's the big day! Happy Birthday! 🎉";
+        return;
+      }
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      countdown.innerHTML = `⏰ ${days}d ${hours}h ${minutes}m ${seconds}s until the celebration!`;
+    }, 1000);
+
+    // 💌 Wishes system (LocalStorage)
+    const messagesDiv = document.getElementById("messages");
+    const savedWishes = JSON.parse(localStorage.getItem("wishes")) || [];
+    savedWishes.forEach(displayWish);
+
+    function addWish() {
+      const wishInput = document.getElementById("wishInput");
+      const text = wishInput.value.trim();
+      if (!text) return;
+      savedWishes.push(text);
+      localStorage.setItem("wishes", JSON.stringify(savedWishes));
+      displayWish(text);
+      wishInput.value = "";
+    }
+
+    function displayWish(wish) {
+      const p = document.createElement("p");
+      p.textContent = "💬 " + wish;
+      messagesDiv.appendChild(p);
+    }
+  </script>
+
+</body>
+<div style="text-align:center; margin-top:30px;">
+  <a href="gallery.html" 
+     style="background:#ff4b2b; 
+            color:white; 
+            padding:12px 24px; 
+            border-radius:8px; 
+            text-decoration:none; 
+            font-weight:bold;
+            box-shadow:0 4px 10px rgba(0,0,0,0.3);">
+    View Full Gallery 💞
+  </a>
+</div>
+
+</html>
