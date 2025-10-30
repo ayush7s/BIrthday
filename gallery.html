@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memories Gallery</title>
+
+  <style>
+    body {
+      background-color: #0b0b0b;
+      color: #fff;
+      text-align: center;
+      font-family: "Poppins", sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      margin-top: 30px;
+      font-size: 2.2em;
+      letter-spacing: 2px;
+    }
+
+    /* Slideshow Container */
+    .slideshow-container {
+      position: relative;
+      margin: 40px auto;
+      width: 85%;
+      height: 550px;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
+      background-color: #111;
+    }
+
+    /* Each Slide */
+    .slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .slide.active {
+      opacity: 1;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* show full image, no cropping */
+      border-radius: 20px;
+      background-color: #000;
+      cursor: pointer;
+    }
+
+    /* Moving Text */
+.moving-text {
+  margin-top: 25px;
+  font-size: 1.4em;
+  white-space: nowrap;        /* keep it in one line */
+  overflow: hidden;
+  display: inline-block;
+  color: #f9a8d4;
+  animation: moveText 45s linear infinite;
+  animation-delay: 0s;
+  will-change: transform;
+}
+@keyframes moveText {
+  0% { transform: translateX(100%); }   /* starts fully from right edge */
+  100% { transform: translateX(-100%); } /* moves to left edge */
+}
+
+
+    /* Back Button */
+    .back {
+      display: inline-block;
+      margin-top: 35px;
+      color: #ff8ae2;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+
+    .back:hover {
+      text-decoration: underline;
+    }
+
+    /* Lightbox Popup */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .lightbox img {
+      max-width: 95%;
+      max-height: 95%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .lightbox.show {
+      display: flex;
+    }
+  </style>
+</head>
+
+<body>
+ <body>
+  <h1>✨ Happy Birthday to you my Sonapori ✨</h1>
+
+  <!-- 🌸 Music Button and Script -->
+  <button id="playMusic" style="
+    background: #ff8ae2; 
+    color: white; 
+    border: none; 
+    padding: 10px 20px; 
+    border-radius: 25px; 
+    font-size: 1em; 
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 0 10px rgba(255, 136, 200, 0.8);
+  ">Play Music 🎶</button>
+
+  <audio id="bgMusic" loop>
+    <source src="music\Guzarish Lyrics - Ghajini  A. R. Rahman, Javed Ali, Sonu Nigam.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const playBtn = document.getElementById('playMusic');
+    const music = document.getElementById('bgMusic');
+
+    playBtn.addEventListener('click', () => {
+      music.play();
+      playBtn.style.display = 'none'; // hide button after clicking
+    });
+  </script>
+
+  <!-- ✅ Keep only this one slideshow -->
+  <div class="slideshow-container">
+    <div class="slide active"><img src="images/1697975946398.jpg" alt="Memory 1"></div>
+    <div class="slide"><img src="images/1740147374121.jpg" alt="Memory 2"></div>
+    <div class="slide"><img src="images/IMG_20230917_112045.jpg" alt="Memory 3"></div>
+    <div class="slide"><img src="images/IMG_20230917_132142.jpg" alt="Memory 4"></div>
+    <div class="slide"><img src="images/IMG_20231017_075246.jpg" alt="Memory 5"></div>
+    <div class="slide"><img src="images/IMG_20231022_174743.jpg" alt="Memory 6"></div>
+    <div class="slide"><img src="images/IMG_20250219_060804MAGICCUTOUT.jpg" alt="Memory 7"></div>
+    <div class="slide"><img src="images/IMG_20250227_205548.png" alt="Memory 8"></div>
+    <div class="slide"><img src="images/IMG_20250415_211200.jpg" alt="Memory 9"></div>
+    <div class="slide"><img src="images/IMG_20250415_212445MAGICCUTOUT.jpg" alt="Memory 10"></div>
+    <div class="slide"><img src="images/IMG_20250419_191843.jpg" alt="Memory 11"></div>
+    <div class="slide"><img src="images/IMG_20250419_192807.jpg" alt="Memory 12"></div>
+    <div class="slide"><img src="images/IMG_20250419_193159.jpg" alt="Memory 13"></div>
+    <div class="slide"><img src="images/IMG_20220826-WA0020.jpg" alt="Memory 14"></div>
+    <div class="slide"><img src="images/IMG-20230415-WA0116.jpg" alt="Memory 15"></div>
+    <div class="slide"><img src="images/IMG-20231114-WA0023.jpg" alt="Memory 16"></div>
+    <div class="slide"><img src="images/IMG-20240420-WA0010.jpg" alt="Memory 17"></div>
+    <div class="slide"><img src="images/IMG-20241031-WA0020(1).jpg" alt="Memory 18"></div>
+  </div>
+
+  <div class="moving-text">💖 Every picture has a story having you is the most presious thing i have in my life. Stay happy always. Take care of yours. Have a great day to you enjoy your day i will be there for you every moment. Wishing you the best birthday ever in your life. May you get all success in your life. Always with you my sweetheart, don't fear in your difficult time, may distance felt us broken but we are always be each other soul. Happiest birthday to you  💖</div>
+
+  <a href="index.html" class="back">← Back to Home</a>
+
+  <!-- Lightbox for full image -->
+  <div class="lightbox" id="lightbox">
+    <img src="" alt="Full Image">
+  </div>
+
+  <script>
+    // Slideshow
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+
+    function showSlide(n) {
+      slides.forEach(slide => slide.classList.remove('active'));
+      slides[n].classList.add('active');
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    setInterval(nextSlide, 4000); // Change every 4 seconds
+
+    // Lightbox functionality
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = lightbox.querySelector('img');
+
+    document.querySelectorAll('.slide img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.classList.add('show');
+      });
+    });
+
+    lightbox.addEventListener('click', () => {
+      lightbox.classList.remove('show');
+    });
+    
+  // 🎉 Confetti Celebration Effect
+  function launchConfetti() {
+    const duration = 5 * 1000; // 5 seconds
+    const end = Date.now() + duration;
+
+    (function frame() {
+      confetti({
+        particleCount: 4,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+      });
+      confetti({
+        particleCount: 4,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    })();
+  }
+
+  // 🎂 Launch automatically when page loads
+  window.addEventListener('load', launchConfetti);
+  
+  // 🎉 Continuous Confetti Falling Effect
+  function continuousConfetti() {
+    confetti({
+      particleCount: 5,
+      spread: 70,
+      origin: { y: 0 },
+      colors: ['#ff69b4', '#ffb6c1', '#ffffff', '#ffd700', '#ff1493'],
+    });
+
+    // keep it falling
+    requestAnimationFrame(continuousConfetti);
+  }
+
+  // start when page loads
+  window.addEventListener('load', continuousConfetti);
+  window.addEventListener("load", () => {
+  const text = document.querySelector(".moving-text");
+  text.style.animation = "moveText 45s linear infinite";
+});
+
+
+
+
+  </script>
+</body>
+
+</html>
